@@ -1,8 +1,6 @@
 # IR-Thermometer-Sensor-MLX90614
 DFRobot IR Thermometer Sensor MLX90614 Respository <br>
 
-DFRobot Analog AC Current Sensor Respository <br>
-
 Contains the Following:
 
 * Schematic: IR Thermometer Sensor-MLX90614 schematic.pdf
