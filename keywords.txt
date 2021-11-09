@@ -1,0 +1,49 @@
+#######################################
+# Syntax Coloring Map For DFRobot_MLX90614
+#######################################
+
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+DFRobot_MLX90614	KEYWORD1
+DFRobot_MLX90614_IIC	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+setEmissivityCorrectionCoefficient	KEYWORD2
+setMeasuredParameters	KEYWORD2
+getAmbientTempCelsius	KEYWORD2
+getObjectTempCelsius	KEYWORD2
+getObject2TempCelsius	KEYWORD2
+enterSleepMode	KEYWORD2
+setIICAddress	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+NO_ERR  LITERAL1
+eIIR50  LITERAL1
+eIIR25  LITERAL1
+eIIR17  LITERAL1
+eIIR13  LITERAL1
+eIIR100 LITERAL1
+eIIR80  LITERAL1
+eIIR67  LITERAL1
+eIIR57  LITERAL1
+eTaAndTo1  LITERAL1
+eTaAndTo2  LITERAL1
+eTo2       LITERAL1
+eTo1AndTo2 LITERAL1
+eFIR8    LITERAL1
+eFIR16   LITERAL1
+eFIR32   LITERAL1
+eFIR64   LITERAL1
+eFIR128  LITERAL1
+eFIR256  LITERAL1
+eFIR512  LITERAL1
+eFIR1024 LITERAL1
