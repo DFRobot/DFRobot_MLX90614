@@ -29,7 +29,7 @@
 #define MLX90614_TOBJ1    0x07   ///< the register address stores the measured temperature of object 1
 #define MLX90614_TOBJ2    0x08   ///< the register address stores the measured temperature of object 2
 
-/* these addresses are in EEPROM, read requires to(| 0x20) */
+/* these addresses are in EEPROM, read requires to "| 0x20" */
 #define MLX90614_TO_MAX         ( 0x00 | 0x20 )   ///< The addresses Tomax, Tomin and Ta range are for customer dependent object and ambient temperature ranges
 #define MLX90614_TO_MIN         ( 0x01 | 0x20 )
 #define MLX90614_PWMCTRL        ( 0x02 | 0x20 )   ///< The address PWMCTRL consists of control bits for configuring the PWM/SDA pin as follows
@@ -121,14 +121,16 @@ public:
   /**
    * @fn getAmbientTempCelsius
    * @brief get ambient temperature, unit is Celsius
-   * @return return value range： -40 C ~ 85 C
+   * @return return value range： -40.01 °C ~ 85 °C
    */
   float getAmbientTempCelsius(void);
 
   /**
    * @fn getObjectTempCelsius
    * @brief get temperature of object 1, unit is Celsius
-   * @return return value range： -40 C ~ 85 C
+   * @return return value range： 
+   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
+   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float getObjectTempCelsius(void);
 
@@ -169,19 +171,19 @@ protected:
 
 };
 
-/***************** initialization and read/write of IIC interface ******************************/
+/***************** initialization and read/write of I2C interface ******************************/
 
-class DFRobot_MLX90614_IIC:public DFRobot_MLX90614
+class DFRobot_MLX90614_I2C:public DFRobot_MLX90614
 {
 public:
   /**
-   * @fn DFRobot_MLX90614_IIC
-   * @brief constructor, set sensor IIC communication address according to SDO pin wiring
-   * @param iicAddr mlx9614 IIC communication address
+   * @fn DFRobot_MLX90614_I2C
+   * @brief constructor, set sensor I2C communication address according to SDO pin wiring
+   * @param i2cAddr mlx9614 I2C communication address
    * @param pWire Wire object is defined in Wire.h, so just use &Wire and the methods in Wire can be pointed to and used
    * @return None
    */
-  DFRobot_MLX90614_IIC(uint8_t iicAddr=0x5A, TwoWire *pWire = &Wire);
+  DFRobot_MLX90614_I2C(uint8_t i2cAddr=0x5A, TwoWire *pWire = &Wire);
 
   /**
    * @fn begin
@@ -201,12 +203,12 @@ public:
   void enterSleepMode(bool mode=true);
 
   /**
-   * @fn setIICAddress
-   * @brief set IIC communication address, the setting takes effect after power down and restart
-   * @param addr new IIC communication address 7bit, range: (0~127)
+   * @fn setI2CAddress
+   * @brief set I2C communication address, the setting takes effect after power down and restart
+   * @param addr new I2C communication address 7bit, range: (0~127)
    * @return None
    */
-  void setIICAddress(uint8_t addr);
+  void setI2CAddress(uint8_t addr);
 
 protected:
 
@@ -221,7 +223,7 @@ protected:
 
   /**
    * @fn writeReg
-   * @brief write register values through IIC bus
+   * @brief write register values through I2C bus
    * @param reg  register address 8bits
    * @param pBuf to write data storage and buffer
    * @return None
@@ -230,7 +232,7 @@ protected:
 
   /**
    * @fn readReg
-   * @brief read register values through IIC bus
+   * @brief read register values through I2C bus
    * @param reg  register address 8bits
    * @param pBuf to read data storage and buffer
    * @return return read length, returning 0 means read failure
@@ -238,8 +240,8 @@ protected:
   virtual size_t readReg(uint8_t reg, void* pBuf);
 
 private:
-  TwoWire *_pWire;   // pointer to IIC communication method
-  uint8_t _deviceAddr;   // IIC communication device address
+  TwoWire *_pWire;   // pointer to I2C communication method
+  uint8_t _deviceAddr;   // I2C communication device address
 };
 
 #endif

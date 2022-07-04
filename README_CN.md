@@ -5,7 +5,7 @@
 MLX90614是一款用于非接触式温度测量的红外温度计。
 红外敏感热电堆探测器芯片和信号调理ASSP集成在同一个TO-39 can中。
 由于其低噪声放大器，17位ADC和强大的DSP单元，实现了高精度和分辨率的温度计。
-该设备采用IIC通信，基于SMBus协议。
+该设备采用I2C通信，基于SMBus协议。
 
 ![产品实物图](./resources/images/mlx90614.png)
 
@@ -79,14 +79,16 @@ MLX90614是一款用于非接触式温度测量的红外温度计。
   /**
    * @fn getAmbientTempCelsius
    * @brief 获取环境温度, 单位摄氏度
-   * @return 返回值范围为： -40 C ~ 85 C
+   * @return 返回值范围为： -40.01 °C ~ 85 °C
    */
   float getAmbientTempCelsius(void);
 
   /**
    * @fn getObjectTempCelsius
    * @brief 获取测量物体的温度, 单位摄氏度
-   * @return 返回值范围为： -40 C ~ 85 C
+   * @return 返回值范围为： 
+   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
+   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float getObjectTempCelsius(void);
 
@@ -101,12 +103,12 @@ MLX90614是一款用于非接触式温度测量的红外温度计。
   void enterSleepMode(bool mode=true);
 
   /**
-   * @fn setIICAddress
-   * @brief 设置IIC通信地址, 掉电重启后生效
-   * @param addr 新的IIC通信地址 7bit, 范围: (0~127)
+   * @fn setI2CAddress
+   * @brief 设置I2C通信地址, 掉电重启后生效
+   * @param addr 新的I2C通信地址 7bit, 范围: (0~127)
    * @return None
    */
-  void setIICAddress(uint8_t addr);
+  void setI2CAddress(uint8_t addr);
 
 ```
 
@@ -125,6 +127,7 @@ micro:bit          |      √       |              |             |
 ## History
 
 - 2021/08/09 - 1.0.0 版本
+- 2022/07/04 - 1.0.1 版本
 
 
 ## Credits

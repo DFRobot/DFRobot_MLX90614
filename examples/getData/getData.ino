@@ -10,7 +10,7 @@
  */
 #include <DFRobot_MLX90614.h>
 
-DFRobot_MLX90614_IIC sensor;   // instantiate an object to drive our sensor
+DFRobot_MLX90614_I2C sensor;   // instantiate an object to drive our sensor
 
 void setup()
 {
@@ -39,19 +39,21 @@ void loop()
 {
   /**
    * get ambient temperature, unit is Celsius
-   * return value range： -40 C ~ 85 C
+   * return value range： -40.01 °C ~ 85 °C
    */
   float ambientTemp = sensor.getAmbientTempCelsius();
 
   /**
    * get temperature of object 1, unit is Celsius
-   * return value range： -40 C ~ 85 C
+   * return value range： 
+   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
+   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float objectTemp = sensor.getObjectTempCelsius();
 
   // print measured data in Celsius
-  Serial.print("Ambient celsius : "); Serial.print(ambientTemp); Serial.println(" C");
-  Serial.print("Object celsius : ");  Serial.print(objectTemp);  Serial.println(" C");
+  Serial.print("Ambient celsius : "); Serial.print(ambientTemp); Serial.println(" °C");
+  Serial.print("Object celsius : ");  Serial.print(objectTemp);  Serial.println(" °C");
 
   // print measured data in Fahrenheit
   Serial.print("Ambient fahrenheit : "); Serial.print(ambientTemp*9/5 + 32); Serial.println(" F");

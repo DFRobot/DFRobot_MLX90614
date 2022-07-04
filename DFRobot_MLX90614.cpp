@@ -1,6 +1,6 @@
 /*!
  * @file  DFRobot_MLX90614.cpp
- * @brief  DFRobot_MLX90614.cpp Initialize the IIC,
+ * @brief  DFRobot_MLX90614.cpp Initialize the I2C,
  * @n      get the celsius temperature and fahrenheit temperature values,get the register values.
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
@@ -118,17 +118,17 @@ uint8_t DFRobot_MLX90614::readModuleFlags(void) {
   return ret;
 }
 
-/************ Initialization of IIC interfaces reading and writing ***********/
+/************ Initialization of I2C interfaces reading and writing ***********/
 
-DFRobot_MLX90614_IIC::DFRobot_MLX90614_IIC(uint8_t iicAddr, TwoWire *pWire)
+DFRobot_MLX90614_I2C::DFRobot_MLX90614_I2C(uint8_t i2cAddr, TwoWire *pWire)
 {
-  _deviceAddr = iicAddr;
+  _deviceAddr = i2cAddr;
   _pWire = pWire;
 }
 
-int DFRobot_MLX90614_IIC::begin(void)
+int DFRobot_MLX90614_I2C::begin(void)
 {
-  // _pWire->begin();   // Wire.h（IIC）library function initialize wire library
+  // _pWire->begin();   // Wire.h（I2C）library function initialize wire library
 
   enterSleepMode(false);
   delay(50);
@@ -136,7 +136,7 @@ int DFRobot_MLX90614_IIC::begin(void)
   return DFRobot_MLX90614::begin();   // Use the initialization function of the parent class
 }
 
-void DFRobot_MLX90614_IIC::enterSleepMode(bool mode)
+void DFRobot_MLX90614_I2C::enterSleepMode(bool mode)
 {
   if(mode){
     // sleep command, refer to the chip datasheet
@@ -163,7 +163,7 @@ void DFRobot_MLX90614_IIC::enterSleepMode(bool mode)
     digitalWrite(SDA, LOW);
     delay(50);
 
-    _pWire->begin();   // Wire.h（IIC）library function initialize wire library
+    _pWire->begin();   // Wire.h（I2C）library function initialize wire library
 
     #ifdef ESP8266
       digitalWrite(SCL, LOW);
@@ -176,7 +176,7 @@ void DFRobot_MLX90614_IIC::enterSleepMode(bool mode)
   delay(200);
 }
 
-void DFRobot_MLX90614_IIC::setIICAddress(uint8_t addr)
+void DFRobot_MLX90614_I2C::setI2CAddress(uint8_t addr)
 {
   uint8_t buf[2] = {0};
   writeReg(MLX90614_SMBUS_ADDR, buf);
@@ -186,7 +186,7 @@ void DFRobot_MLX90614_IIC::setIICAddress(uint8_t addr)
   delay(10);
 }
 
-unsigned char DFRobot_MLX90614_IIC::crc8Polyomial107(unsigned char *ptr, size_t len)
+unsigned char DFRobot_MLX90614_I2C::crc8Polyomial107(unsigned char *ptr, size_t len)
 {
   unsigned char i; 
   unsigned char crc=0x00;   // calculated initial crc value
@@ -213,7 +213,7 @@ unsigned char DFRobot_MLX90614_IIC::crc8Polyomial107(unsigned char *ptr, size_t 
   return (crc); 
 }
 
-void DFRobot_MLX90614_IIC::writeReg(uint8_t reg, const void* pBuf)
+void DFRobot_MLX90614_I2C::writeReg(uint8_t reg, const void* pBuf)
 {
   if(pBuf == NULL){
     DBG("pBuf ERROR!! : null pointer");
@@ -231,7 +231,7 @@ void DFRobot_MLX90614_IIC::writeReg(uint8_t reg, const void* pBuf)
   _pWire->endTransmission();
 }
 
-size_t DFRobot_MLX90614_IIC::readReg(uint8_t reg, void* pBuf)
+size_t DFRobot_MLX90614_I2C::readReg(uint8_t reg, void* pBuf)
 {
   size_t count = 0;
   if(NULL == pBuf){

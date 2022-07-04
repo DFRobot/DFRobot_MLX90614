@@ -79,14 +79,16 @@ then open the examples folder and run the demo in the folder.
   /**
    * @fn getAmbientTempCelsius
    * @brief get ambient temperature, unit is Celsius
-   * @return return value range： -40 C ~ 85 C
+   * @return return value range： -40.01 °C ~ 85 °C
    */
   float getAmbientTempCelsius(void);
 
   /**
    * @fn getObjectTempCelsius
    * @brief get temperature of object, unit is Celsius
-   * @return return value range： -40 C ~ 85 C
+   * @return return value range： 
+   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
+   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float getObjectTempCelsius(void);
 
@@ -101,12 +103,12 @@ then open the examples folder and run the demo in the folder.
   void enterSleepMode(bool mode=true);
 
   /**
-   * @fn setIICAddress
-   * @brief set IIC communication address, the setting takes effect after power down and restart
-   * @param addr new IIC communication address 7bit, range: (0~127)
+   * @fn setI2CAddress
+   * @brief set I2C communication address, the setting takes effect after power down and restart
+   * @param addr new I2C communication address 7bit, range: (0~127)
    * @return None
    */
-  void setIICAddress(uint8_t addr);
+  void setI2CAddress(uint8_t addr);
 
 ```
 
@@ -124,6 +126,7 @@ micro:bit          |      √       |              |             |
 ## History
 
 - 2021/08/09 - Version 1.0.0 released.
+- 2022/07/04 - Version 1.0.1 released.
 
 
 ## Credits

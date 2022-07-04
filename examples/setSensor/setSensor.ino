@@ -10,8 +10,8 @@
  */
 #include <DFRobot_MLX90614.h>
 
-#define MLX90614_IIC_ADDR 0x5A   // mlx9614 default IIC communication address
-DFRobot_MLX90614_IIC sensor(MLX90614_IIC_ADDR, &Wire);   // instantiate an object to drive the sensor
+#define MLX90614_I2C_ADDR 0x5A   // mlx9614 default I2C communication address
+DFRobot_MLX90614_I2C sensor(MLX90614_I2C_ADDR, &Wire);   // instantiate an object to drive the sensor
 
 void setup()
 {
@@ -32,10 +32,10 @@ void setup()
   sensor.setEmissivityCorrectionCoefficient(1.0);
 
   /**
-   * set IIC communication address, the setting takes effect after power down and restart
-   * addr new IIC communication address 7bit(0~125)
+   * set I2C communication address, the setting takes effect after power down and restart
+   * addr new I2C communication address 7bit(0~127)
    */
-  sensor.setIICAddress(0x5A);
+  sensor.setI2CAddress(0x5A);
 
   /**
    * set the measurement parameters, including IIR (Infinite Impulse Response Digital Filter) and FIR (Finite Impulse Response Digital Filter)
@@ -60,19 +60,21 @@ void loop()
 {
   /**
    * get ambient temperature, unit is Celsius
-   * return value range： -40 C ~ 85 C
+   * return value range： -40.01 °C ~ 85 °C
    */
   float ambientTemp = sensor.getAmbientTempCelsius();
 
   /**
    * get temperature of object 1, unit is Celsius
-   * return value range： -40 C ~ 85 C
+   * return value range： 
+   * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
+   * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float objectTemp = sensor.getObjectTempCelsius();
 
-  // print measured data in Celsius, unit is Celsius (C)
-  Serial.print("Ambient celsius : "); Serial.print(ambientTemp); Serial.println(" C");
-  Serial.print("Object celsius : ");  Serial.print(objectTemp);  Serial.println(" C");
+  // print measured data in Celsius, unit is Celsius (°C)
+  Serial.print("Ambient celsius : "); Serial.print(ambientTemp); Serial.println(" °C");
+  Serial.print("Object celsius : ");  Serial.print(objectTemp);  Serial.println(" °C");
 
   // print measured data in Fahrenheit, unit is Fahrenheit (F)
   Serial.print("Ambient fahrenheit : "); Serial.print(ambientTemp*9/5 + 32); Serial.println(" F");

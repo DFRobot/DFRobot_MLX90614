@@ -7,7 +7,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 DFRobot_MLX90614	KEYWORD1
-DFRobot_MLX90614_IIC	KEYWORD1
+DFRobot_MLX90614_I2C	KEYWORD1
 
 
 #######################################
@@ -20,7 +20,7 @@ getAmbientTempCelsius	KEYWORD2
 getObjectTempCelsius	KEYWORD2
 getObject2TempCelsius	KEYWORD2
 enterSleepMode	KEYWORD2
-setIICAddress	KEYWORD2
+setI2CAddress	KEYWORD2
 
 
 #######################################
