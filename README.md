@@ -61,10 +61,11 @@ then open the examples folder and run the demo in the folder.
    * @fn setEmissivityCorrectionCoefficient
    * @brief set the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object,
    * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
-   * @param calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: (0~1)
+   * @param calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [0.1, 1.0]
+   * @param set0X0F false: Default; true : Applicable to the mlx90614 Series c
    * @return None
    */
-  void setEmissivityCorrectionCoefficient(float calibrationValue);
+  void setEmissivityCorrectionCoefficient(float calibrationValue, bool set0X0F = false);
 
   /**
    * @fn setMeasuredParameters
@@ -127,6 +128,7 @@ micro:bit          |      √       |              |             |
 
 - 2021/08/09 - Version 1.0.0 released.
 - 2022/07/04 - Version 1.0.1 released.
+- 2024/02/06 - Version 1.0.2 released.
 
 
 ## Credits

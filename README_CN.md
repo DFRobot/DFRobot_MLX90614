@@ -61,10 +61,11 @@ MLX90614是一款用于非接触式温度测量的红外温度计。
    * @fn setEmissivityCorrectionCoefficient
    * @brief 设置发射率校准系数, 需要用户手动计算“传感器更改发射率之前测量的温度”与“物体真实温度”的比值, 
    * @n     将这个作为参数传入此api, 之后传感器测量对应物体的绝对温度值的偏差就会降低
-   * @param calibrationValue 新的校准系数值, “传感器更改发射率之前测量的温度”与“物体真实温度”的比值, 范围: (0~1)
+   * @param calibrationValue 新的校准系数值, “传感器更改发射率之前测量的温度”与“物体真实温度”的比值, 范围: [0.1, 1.0]
+   * @param set0X0F false: Default; true : Applicable to the mlx90614 Series c
    * @return None
    */
-  void setEmissivityCorrectionCoefficient(float calibrationValue);
+  void setEmissivityCorrectionCoefficient(float calibrationValue, bool set0X0F = false);
 
   /**
    * @fn setMeasuredParameters
@@ -128,6 +129,7 @@ micro:bit          |      √       |              |             |
 
 - 2021/08/09 - 1.0.0 版本
 - 2022/07/04 - 1.0.1 版本
+- 2024/02/06 - 1.0.2 版本
 
 
 ## Credits

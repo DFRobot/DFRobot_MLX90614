@@ -16,7 +16,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-// #define ENABLE_DBG   //!< open this macro and you can see the details of the program
+#define ENABLE_DBG   //!< open this macro and you can see the details of the program
 #ifdef ENABLE_DBG
   #define DBG(...) {Serial.print("[");Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
 #else
@@ -37,11 +37,15 @@
 #define MLX90614_EMISSIVITY     ( 0x04 | 0x20 )   ///< The address Emissivity contains the object emissivity (factory default 1.0 = 0xFFFF)
 #define MLX90614_CONFIG_REG1    ( 0x05 | 0x20 )   ///< The address ConfigRegister1 consists of control bits for configuring the analog and digital parts
 #define MLX90614_SMBUS_ADDR     ( 0x0E | 0x20 )   ///< SMBus address (LSByte only)
+#define MLX90614_FOR_EMISSIVITY ( 0x0F | 0x20 )   ///< https://www.melexis.com/en/documents/documentation/application-notes/application-note-mlx90614-changing-emissivity-setting
 #define MLX90614_ID_NUMBER      ( 0x1C | 0x20 )   ///< ID number
 
 #define MLX90614_FLAGS            0xF0   ///< Read Flags
 #define MLX90614_SLEEP_MODE       0xFF   ///< Enter SLEEP mode
 #define MLX90614_SLEEP_MODE_PEC   0xE8   ///< Enter SLEEP mode PEC
+
+#define MLX90614_CONCAT_BYTES(msb, lsb)   (((uint16_t)msb << 8) | (uint16_t)lsb)   ///< Macro combines two 8-bit data into one 16-bit data
+#define TWO_BYTES_CONCAT(buf)   (((uint16_t)buf[1] << 8) | (uint16_t)buf[0])   ///< Macro combines two 8-bit data into one 16-bit data
 
 class DFRobot_MLX90614
 {
@@ -104,10 +108,11 @@ public:
    * @fn setEmissivityCorrectionCoefficient
    * @brief set the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, 
    * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
-   * @param calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: (0~1)
+   * @param calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [0.1, 1.0]
+   * @param set0X0F false: Default; true : Applicable to the mlx90614 Series c
    * @return None
    */
-  void setEmissivityCorrectionCoefficient(float calibrationValue);
+  void setEmissivityCorrectionCoefficient(float calibrationValue, bool set0X0F = false);
 
   /**
    * @fn setMeasuredParameters
@@ -150,6 +155,14 @@ protected:
    * @return four flags
    */
   uint8_t readModuleFlags(void);
+
+  /**
+   * @fn sendCommand
+   * @brief Enter EEPROM address 0x0F unlock key
+   * @param cmd 0x60 unlock, 0x61 lock
+   * @return None
+   */
+  virtual void sendCommand(uint8_t cmd)=0;
 
   /**
    * @fn writeReg
@@ -220,6 +233,14 @@ protected:
    * @return char type, return the calculated crc check code
    */
   unsigned char crc8Polyomial107(unsigned char *ptr, size_t len);
+
+  /**
+   * @fn sendCommand
+   * @brief Enter EEPROM address 0x0F unlock key
+   * @param cmd 0x60 unlock, 0x61 lock
+   * @return None
+   */
+  virtual void sendCommand(uint8_t cmd);
 
   /**
    * @fn writeReg

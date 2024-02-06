@@ -27,7 +27,8 @@ void setup()
   /**
    * set the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object,
    * upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
-   * calibrationValue new calibration coefficient, [0, 1]
+   * calibrationValue new calibration coefficient, [0.1, 1.0]
+   * Not applicable to the mlx90614 Series c
    */
   sensor.setEmissivityCorrectionCoefficient(1.0);
 
@@ -42,7 +43,7 @@ void setup()
    * IIRMode: eIIR100, eIIR80, eIIR67, eIIR57;
    * FIRMode: eFIR128, eFIR256, eFIR512, eFIR1024;
    */
-   sensor.setMeasuredParameters(sensor.eIIR100, sensor.eFIR1024);
+  sensor.setMeasuredParameters(sensor.eIIR100, sensor.eFIR1024);
 
   /**
    * control the sensor sleep mode, must enter and exit the sleep mode once after the sensor is configured (equivalent to soft reset) to ensure the normal reading of the measured data
