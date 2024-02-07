@@ -115,6 +115,22 @@ public:
   void setEmissivityCorrectionCoefficient(float calibrationValue, bool set0X0F = false);
 
   /**
+   * @fn getEmissivityCorrectionCoefficient
+   * @brief get the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object,
+   * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
+   * @return calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [0.1, 1.0]
+   */
+  float getEmissivityCorrectionCoefficient(void);
+
+  /**
+   * @fn getEmissivityReg
+   * @brief get the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, 
+   * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
+   * @return calibrationValue new calibration coefficient RAW 16bits, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [6553, 65535]
+   */
+  uint16_t getEmissivityReg(void);
+
+  /**
    * @fn setMeasuredParameters
    * @brief set the measurement parameters, including IIR (Infinite Impulse Response Digital Filter) and FIR (Finite Impulse Response Digital Filter)
    * @param IIRMode: eIIR100, eIIR80, eIIR67, eIIR57;

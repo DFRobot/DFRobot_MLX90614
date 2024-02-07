@@ -43,6 +43,12 @@ void DFRobot_MLX90614::setEmissivityCorrectionCoefficient(float calibrationValue
   uint16_t emissivity = round(65535 * calibrationValue);
   DBG(emissivity, HEX);
 
+  uint16_t emissivity_reg = getEmissivityReg();
+  if (emissivity == emissivity_reg) {
+	  DBG("Same emissivity to set");
+	  return;
+  }
+
   uint8_t buf[2] = { 0 };   // Avoid endianness
   uint16_t curE = 0;
   uint16_t data = 0;
@@ -90,6 +96,22 @@ void DFRobot_MLX90614::setEmissivityCorrectionCoefficient(float calibrationValue
 
     sendCommand(0x61);   // lock key
   }
+}
+
+float DFRobot_MLX90614::getEmissivityCorrectionCoefficient(void)
+{
+  return ((float)getEmissivityReg())/65535.0;
+}
+
+uint16_t DFRobot_MLX90614::getEmissivityReg(void)
+{
+  uint16_t emissivity = 0;
+  uint8_t buf[2] = { 0 };
+  readReg(MLX90614_EMISSIVITY, buf);
+  emissivity = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  DBG(emissivity, HEX);
+  delay(10);
+  return emissivity;
 }
 
 void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRMode)
