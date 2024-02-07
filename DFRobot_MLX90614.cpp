@@ -136,23 +136,55 @@ void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRM
   delay(10);
 }
 
-uint16_t DFRobot_MLX90614::getConfigRegister1(void) {
+uint16_t DFRobot_MLX90614::getConfigRegister1(void)
+{
   uint8_t buf[2] = {0};
   readReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
   return ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
 }
 
-uint8_t DFRobot_MLX90614::getGainBits(void) {
+uint8_t DFRobot_MLX90614::getGainBits(void)
+{
   uint8_t buf[2] = {0};
   readReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
   return ((buf[1]>>3)&0x07);
 }
 
-uint8_t DFRobot_MLX90614::getGainValue(void) {
+uint8_t DFRobot_MLX90614::getGainValue(void)
+{
   uint8_t vGAIN[]={1,3,9,12,25,50,100,100};
   return vGAIN[getGainBits()];
+}
+
+void DFRobot_MLX90614::setGainBits(eGAINMode_t GAINMode)
+{
+  uint8_t gainbits = (uint8_t)GAINMode;
+  uint8_t buf[2] = {0};
+  DBG(gainbits);
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  if (gainbits != ((buf[1]>>3)&0x07)) {
+	  uint8_t wbuf[2] = {0};
+	  writeReg(MLX90614_CONFIG_REG1, wbuf);
+	  delay(10);
+	  buf[1] = (buf[1] & 0xC7) | (gainbits<<3);
+	  DBG((uint16_t)buf[0] | (uint16_t)(buf[1] << 8),HEX)
+	  writeReg(MLX90614_CONFIG_REG1, buf);
+	  delay(10);
+  }
+}
+
+uint8_t DFRobot_MLX90614::setGainValue(uint8_t gainvalue) {
+  uint8_t vGAIN[]={1,3,9,12,25,50,100,100};
+  uint8_t gainbits=0;
+  while ((gainbits<8) && (gainvalue>=vGAIN[gainbits])) gainbits++;
+  if (gainbits) {
+	  setGainBits((eGAINMode_t)(--gainbits));
+	  return vGAIN[gainbits];
+  }
+  return 0;
 }
 
 float DFRobot_MLX90614::getAmbientTempCelsius(void)

@@ -86,6 +86,22 @@ public:
     eFIR1024,
   }eFIRMode_t;
 
+  /**
+   * @enum eGAINMode_t
+   * @brief GAIN mode
+   */
+   typedef enum
+   {
+	   eGAIN1 = 0,
+	   eGAIN3,
+	   eGAIN6,
+	   eGAIN12,
+	   eGAIN25,
+	   eGAIN50,
+	   eGAIN100,
+	   eGAIN100b
+   }eGAINMode_t;
+
 public:
   /**
    * @fn DFRobot_MLX90614
@@ -152,6 +168,22 @@ public:
    * @return  Gain of the amplifier
    */
   uint8_t getGainValue(void);
+
+  /**
+   * @fn setGainBits
+   * @brief set the gain bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @param GAINMode: eGAIN1, eGAIN3, eGAIN6, eGAIN12, eGAIN25, eGAIN50, eGAIN100
+   * @return None
+   */
+   void setGainBits(eGAINMode_t GAINMode=eGAIN100);
+
+   /**
+   * @fn setGainValue
+   * @brief set the gain of the amplifier to a fixed value if possible or just below this value.
+   * @param the gain value
+   * @return the gain of the amplifier that was set or 0 if not set
+   */
+  uint8_t setGainValue(uint8_t gainvalue=0);
 
   /**
    * @fn getConfigRegister1
