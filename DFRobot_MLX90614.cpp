@@ -136,6 +136,13 @@ void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRM
   delay(10);
 }
 
+uint16_t DFRobot_MLX90614::getConfigRegister1(void) {
+  uint8_t buf[3] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+}
+
 float DFRobot_MLX90614::getAmbientTempCelsius(void)
 {
   uint8_t buf[2];

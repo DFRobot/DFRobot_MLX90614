@@ -140,6 +140,13 @@ public:
   void setMeasuredParameters(eIIRMode_t IIRMode=eIIR100, eFIRMode_t FIRMode=eFIR1024);
 
   /**
+   * @fn getConfigRegister1
+   * @brief get the ConfigRegister1 value including measurement parameters i.e. IIR (Infinite Impulse Response Digital Filter), FIR (Finite Impulse Response Digital Filter) and the gain of the amplifier (see datasheet page 15)
+   * @return ConfigRegister1 value
+   */
+  uint16_t getConfigRegister1(void);
+
+  /**
    * @fn getAmbientTempCelsius
    * @brief get ambient temperature, unit is Celsius
    * @return return value range： -40.01 °C ~ 85 °C
