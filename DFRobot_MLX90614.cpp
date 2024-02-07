@@ -144,6 +144,33 @@ uint16_t DFRobot_MLX90614::getConfigRegister1(void)
   return ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
 }
 
+uint8_t DFRobot_MLX90614::getFIRBits(void)
+{
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return (buf[1]&0x07);
+}
+
+uint16_t DFRobot_MLX90614::getFIRLength(void)
+{
+  uint16_t FIRLengths[]={8,16,32,64,128,256,512,1024};
+  return FIRLengths[getFIRBits()];
+}
+
+uint8_t DFRobot_MLX90614::getIIRBits(void) {
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return (buf[0]&0x07);
+}
+
+uint8_t DFRobot_MLX90614::getIIRSpikeLimit(void)
+{
+  uint8_t SpikeLimits[]={50,25,17,13,100,80,67,57};
+  return SpikeLimits[getIIRBits()];
+}
+
 uint8_t DFRobot_MLX90614::getGainBits(void)
 {
   uint8_t buf[2] = {0};

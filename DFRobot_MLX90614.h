@@ -156,6 +156,41 @@ public:
   void setMeasuredParameters(eIIRMode_t IIRMode=eIIR100, eFIRMode_t FIRMode=eFIR1024);
 
   /**
+   * @fn getConfigRegister1
+   * @brief get the ConfigRegister1 value including measurement parameters i.e. IIR (Infinite Impulse Response Digital Filter), FIR (Finite Impulse Response Digital Filter) and the gain of the amplifier (see datasheet page 15)
+   * @return ConfigRegister1 value
+   */
+  uint16_t getConfigRegister1(void);
+
+  /**
+   * @fn getFIRBits
+   * @brief get the FIR bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return FIR bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getFIRBits(void);
+
+  /**
+   * @fn getFIRLength
+   * @brief get the FIR length of the sensor (see datasheet page 15)
+   * @return FIR length of the sensor (see datasheet page 15)
+   */
+  uint16_t getFIRLength(void);
+
+  /**
+   * @fn getIIRBits
+   * @brief get  FIR bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return IIR bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getIIRBits(void);
+
+  /**
+   * @fn getIRRSpikeLimit
+   * @brief get the IIR spike limit of the sensor in purcentage (see datasheet page 15)
+   * @return IIR spike limit of the sensor in purcentage (see datasheet page 15)
+   */
+  uint8_t getIIRSpikeLimit(void);
+
+  /**
    * @fn getGainBits
    * @brief get the gain bits of the sensor from the ConfigRegister1 (see datasheet page 15)
    * @return Gain bits of the sensor (see datasheet page 15)
@@ -184,13 +219,6 @@ public:
    * @return the gain of the amplifier that was set or 0 if not set
    */
   uint8_t setGainValue(uint8_t gainvalue=0);
-
-  /**
-   * @fn getConfigRegister1
-   * @brief get the ConfigRegister1 value including measurement parameters i.e. IIR (Infinite Impulse Response Digital Filter), FIR (Finite Impulse Response Digital Filter) and the gain of the amplifier (see datasheet page 15)
-   * @return ConfigRegister1 value
-   */
-  uint16_t getConfigRegister1(void);
 
   /**
    * @fn getAmbientTempCelsius
