@@ -68,14 +68,94 @@ then open the examples folder and run the demo in the folder.
   void setEmissivityCorrectionCoefficient(float calibrationValue, bool set0X0F = false);
 
   /**
+   * @fn getEmissivityCorrectionCoefficient
+   * @brief get the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object,
+   * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
+   * @return calibrationValue new calibration coefficient, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [0.1, 1.0]
+   */
+  float getEmissivityCorrectionCoefficient(void);
+
+  /**
+   * @fn getEmissivityReg
+   * @brief get the emissivity calibration coefficient, users need to calculate the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, 
+   * @n     upload the ratio to the api as a parameter, and the deviation of the object absolute temperature measured by the sensor will be lower
+   * @return calibrationValue new calibration coefficient RAW 16bits, the ratio of the temperature measured before the sensor changes emissivity to the true temperature of the object, range: [6553, 65535]
+   */
+  uint16_t getEmissivityReg(void);
+
+  /**
    * @fn setMeasuredParameters
    * @brief set the measurement parameters, including IIR (Infinite Impulse Response Digital Filter) and FIR (Finite Impulse Response Digital Filter)
-   * @details Filter noise (biased measurement data) to provide data accuracy, filter coefficients can be set as follows
    * @param IIRMode: eIIR100, eIIR80, eIIR67, eIIR57;
    * @param FIRMode: eFIR128, eFIR256, eFIR512, eFIR1024;
    * @return None
    */
   void setMeasuredParameters(eIIRMode_t IIRMode=eIIR100, eFIRMode_t FIRMode=eFIR1024);
+
+  /**
+   * @fn getConfigRegister1
+   * @brief get the ConfigRegister1 value including measurement parameters i.e. IIR (Infinite Impulse Response Digital Filter), FIR (Finite Impulse Response Digital Filter) and the gain of the amplifier (see datasheet page 15)
+   * @return ConfigRegister1 value
+   */
+  uint16_t getConfigRegister1(void);
+
+  /**
+   * @fn getFIRBits
+   * @brief get the FIR bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return FIR bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getFIRBits(void);
+
+  /**
+   * @fn getFIRLength
+   * @brief get the FIR length of the sensor (see datasheet page 15)
+   * @return FIR length of the sensor (see datasheet page 15)
+   */
+  uint16_t getFIRLength(void);
+
+  /**
+   * @fn getIIRBits
+   * @brief get  FIR bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return IIR bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getIIRBits(void);
+
+  /**
+   * @fn getIRRSpikeLimit
+   * @brief get the IIR spike limit of the sensor in purcentage (see datasheet page 15)
+   * @return IIR spike limit of the sensor in purcentage (see datasheet page 15)
+   */
+  uint8_t getIIRSpikeLimit(void);
+
+  /**
+   * @fn getGainBits
+   * @brief get the gain bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return Gain bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getGainBits(void);
+
+  /**
+   * @fn getGainValue
+   * @brief get the gain of the amplifier i.e. 1,3,9,12(.5),25,50 or 100
+   * @return  Gain of the amplifier
+   */
+  uint8_t getGainValue(void);
+
+  /**
+   * @fn setGainBits
+   * @brief set the gain bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @param GAINMode: eGAIN1, eGAIN3, eGAIN6, eGAIN12, eGAIN25, eGAIN50, eGAIN100
+   * @return None
+   */
+   void setGainBits(eGAINMode_t GAINMode=eGAIN100);
+
+   /**
+   * @fn setGainValue
+   * @brief set the gain of the amplifier to a fixed value if possible or just below this value.
+   * @param the gain value
+   * @return the gain of the amplifier that was set or 0 if not set
+   */
+  uint8_t setGainValue(uint8_t gainvalue=0);
 
   /**
    * @fn getAmbientTempCelsius
@@ -85,13 +165,27 @@ then open the examples folder and run the demo in the folder.
   float getAmbientTempCelsius(void);
 
   /**
+   * @fn getAmbientTemp
+   * @brief get raw ambient temperature from sensor
+   * @return return temperature in 16bits format
+   */
+  uint16_t getAmbientTemp(void);
+
+  /**
    * @fn getObjectTempCelsius
-   * @brief get temperature of object, unit is Celsius
+   * @brief get temperature of object 1, unit is Celsius
    * @return return value range： 
    * @n  -70.01 °C ~ 270 °C(MLX90614ESF-DCI)
    * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float getObjectTempCelsius(void);
+
+  /**
+   * @fn getObjectTemp
+   * @brief get raw temperature of object 1
+   * @return return temperature in 16bits format
+   */
+  uint16_t getObjectTemp(void);
 
   /**
    * @fn enterSleepMode
@@ -129,6 +223,7 @@ micro:bit          |      √       |              |             |
 - 2021/08/09 - Version 1.0.0 released.
 - 2022/07/04 - Version 1.0.1 released.
 - 2024/02/06 - Version 1.0.2 released.
+- 2024/02/07 - Version 1.0.3 dev.
 
 
 ## Credits
