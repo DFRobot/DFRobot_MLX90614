@@ -228,6 +228,13 @@ public:
   float getAmbientTempCelsius(void);
 
   /**
+   * @fn getAmbientTemp
+   * @brief get raw ambient temperature from sensor
+   * @return return temperature in 16bits format
+   */
+  uint16_t getAmbientTemp(void);
+
+  /**
    * @fn getObjectTempCelsius
    * @brief get temperature of object 1, unit is Celsius
    * @return return value range： 
@@ -235,6 +242,13 @@ public:
    * @n  -70.01 °C ~ 380 °C(MLX90614ESF-DCC)
    */
   float getObjectTempCelsius(void);
+
+  /**
+   * @fn getObjectTemp
+   * @brief get raw temperature of object 1
+   * @return return temperature in 16bits format
+   */
+  uint16_t getObjectTemp(void);
 
 protected:
 /***************** register read/write ports ******************************/

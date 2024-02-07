@@ -223,6 +223,14 @@ float DFRobot_MLX90614::getAmbientTempCelsius(void)
   return temp;   // Get celsius temperature of the ambient
 }
 
+uint16_t DFRobot_MLX90614::getAmbientTemp(void)
+{
+  uint8_t buf[3];
+  readReg(MLX90614_TA, buf);
+  uint16_t temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  return temp;   // Get raw temperature of the ambient
+}
+
 float DFRobot_MLX90614::getObjectTempCelsius(void)
 {
   uint8_t buf[2];
@@ -233,13 +241,21 @@ float DFRobot_MLX90614::getObjectTempCelsius(void)
   return temp;   // Get celsius temperature of the object 
 }
 
+uint16_t DFRobot_MLX90614::getObjectTemp(void)
+{
+  uint8_t buf[3];
+  readReg(MLX90614_TOBJ1, buf);
+  // DBG((buf[0] | buf[1] << 8), HEX);
+  uint16_t temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  return temp;   // Get raw temperature of the object 
+}
+
 float DFRobot_MLX90614::getObject2TempCelsius(void)
 {
   uint8_t buf[2];
   readReg(MLX90614_TOBJ2, buf);
   // DBG((buf[0] | buf[1] << 8), HEX);
   float temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8)) * 0.02 - 273.15;
-
   return temp;   // Get celsius temperature of the object 
 }
 
