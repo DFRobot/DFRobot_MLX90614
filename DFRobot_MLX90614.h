@@ -7,7 +7,7 @@
  * @license  The MIT License (MIT)
  * @author  [qsjhyy](yihuan.huang@dfrobot.com)
  * @version  V1.0
- * @date  2021-07-29
+ * @date  2024-02-07
  * @url  https://github.com/DFRobot/DFRobot_MLX90614
  */
 #ifndef __DFROBOT_MLX90614_H__

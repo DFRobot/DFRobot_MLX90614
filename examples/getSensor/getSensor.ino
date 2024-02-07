@@ -1,12 +1,12 @@
 /*!
  * @file        getSensor.ino
  * @brief       this demo is to get the emissivity calibration coefficient, and get measurement parameters, including IIR, FIR and the gain of the sensor amplifier
- * @copyright   Copyright (c) 2023 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @copyright   Copyright (c) 2024 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
  * @author      [qsjhyy](yihuan.huang@dfrobot.com), Rudy Ercek (ULB)
- * @version     V2.0
- * @date        2023-08-04
- * @url         https://gitlab.com/ulb-polytech/ba2-projects/biomed/2023-2024/dfrobot_mlx90614, https://github.com/DFRobot/DFRobot_MLX90614
+ * @version     V1.0
+ * @date        2024-02-24
+ * @url         https://github.com/DFRobot/DFRobot_MLX90614
  */
 #include <DFRobot_MLX90614.h>
 
