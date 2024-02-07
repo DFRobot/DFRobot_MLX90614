@@ -137,10 +137,22 @@ void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRM
 }
 
 uint16_t DFRobot_MLX90614::getConfigRegister1(void) {
-  uint8_t buf[3] = {0};
+  uint8_t buf[2] = {0};
   readReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
   return ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+}
+
+uint8_t DFRobot_MLX90614::getGainBits(void) {
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return ((buf[1]>>3)&0x07);
+}
+
+uint8_t DFRobot_MLX90614::getGainValue(void) {
+  uint8_t vGAIN[]={1,3,9,12,25,50,100,100};
+  return vGAIN[getGainBits()];
 }
 
 float DFRobot_MLX90614::getAmbientTempCelsius(void)

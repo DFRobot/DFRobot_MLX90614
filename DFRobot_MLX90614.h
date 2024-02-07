@@ -140,6 +140,20 @@ public:
   void setMeasuredParameters(eIIRMode_t IIRMode=eIIR100, eFIRMode_t FIRMode=eFIR1024);
 
   /**
+   * @fn getGainBits
+   * @brief get the gain bits of the sensor from the ConfigRegister1 (see datasheet page 15)
+   * @return Gain bits of the sensor (see datasheet page 15)
+   */
+  uint8_t getGainBits(void);
+
+  /**
+   * @fn getGainValue
+   * @brief get the gain of the amplifier i.e. 1,3,9,12(.5),25,50 or 100
+   * @return  Gain of the amplifier
+   */
+  uint8_t getGainValue(void);
+
+  /**
    * @fn getConfigRegister1
    * @brief get the ConfigRegister1 value including measurement parameters i.e. IIR (Infinite Impulse Response Digital Filter), FIR (Finite Impulse Response Digital Filter) and the gain of the amplifier (see datasheet page 15)
    * @return ConfigRegister1 value
