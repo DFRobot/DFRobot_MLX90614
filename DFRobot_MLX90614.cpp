@@ -120,6 +120,11 @@ void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRM
   readReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
 
+  if ( (buf[0]&0x07)==IIRMode && (buf[1]&0x07)==FIRMode ) {
+	  DBG("Same filters to set");
+	  return;
+  }
+
   buf[0] &= 0xF8;
   buf[1] &= 0xF8;
   writeReg(MLX90614_CONFIG_REG1, buf);
