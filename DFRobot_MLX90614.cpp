@@ -121,17 +121,17 @@ void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRM
   delay(10);
 
   if ( (buf[0]&0x07)==IIRMode && (buf[1]&0x07)==FIRMode ) {
-	  DBG("Same filters to set");
+	  DBG("Same filters to set; abort writing");
 	  return;
   }
 
-  buf[0] &= 0xF8;
-  buf[1] &= 0xF8;
-  writeReg(MLX90614_CONFIG_REG1, buf);
+  //First write 0 in the EEPROM; see 8.3.3.1 in datasheet pg 17 
+  uint8_t wbuf[2] = {0}; //write 16bits buffer with 0
+  writeReg(MLX90614_CONFIG_REG1, wbuf);
   delay(10);
 
-  buf[0] |= IIRMode;
-  buf[1] |= FIRMode;
+  buf[0] = (buf[0] & 0xF8) | IIRMode;
+  buf[1] = (buf[1] & 0xF8) | FIRMode;
   writeReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
 }
