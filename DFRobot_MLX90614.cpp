@@ -43,6 +43,12 @@ void DFRobot_MLX90614::setEmissivityCorrectionCoefficient(float calibrationValue
   uint16_t emissivity = round(65535 * calibrationValue);
   DBG(emissivity, HEX);
 
+  uint16_t emissivity_reg = getEmissivityReg();
+  if (emissivity == emissivity_reg) {
+	  DBG("Same emissivity to set");
+	  return;
+  }
+
   uint8_t buf[2] = { 0 };   // Avoid endianness
   uint16_t curE = 0;
   uint16_t data = 0;
@@ -92,21 +98,120 @@ void DFRobot_MLX90614::setEmissivityCorrectionCoefficient(float calibrationValue
   }
 }
 
+float DFRobot_MLX90614::getEmissivityCorrectionCoefficient(void)
+{
+  return ((float)getEmissivityReg())/65535.0;
+}
+
+uint16_t DFRobot_MLX90614::getEmissivityReg(void)
+{
+  uint16_t emissivity = 0;
+  uint8_t buf[2] = { 0 };
+  readReg(MLX90614_EMISSIVITY, buf);
+  emissivity = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  DBG(emissivity, HEX);
+  delay(10);
+  return emissivity;
+}
+
 void DFRobot_MLX90614::setMeasuredParameters(eIIRMode_t IIRMode, eFIRMode_t FIRMode)
 {
   uint8_t buf[2] = { 0 };
   readReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
 
-  buf[0] &= 0xF8;
-  buf[1] &= 0xF8;
-  writeReg(MLX90614_CONFIG_REG1, buf);
+  if ( (buf[0]&0x07)==IIRMode && (buf[1]&0x07)==FIRMode ) {
+	  DBG("Same filters to set; abort writing");
+	  return;
+  }
+
+  //First write 0 in the EEPROM; see 8.3.3.1 in datasheet pg 17 
+  uint8_t wbuf[2] = {0}; //write 16bits buffer with 0
+  writeReg(MLX90614_CONFIG_REG1, wbuf);
   delay(10);
 
-  buf[0] |= IIRMode;
-  buf[1] |= FIRMode;
+  buf[0] = (buf[0] & 0xF8) | IIRMode;
+  buf[1] = (buf[1] & 0xF8) | FIRMode;
   writeReg(MLX90614_CONFIG_REG1, buf);
   delay(10);
+}
+
+uint16_t DFRobot_MLX90614::getConfigRegister1(void)
+{
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+}
+
+uint8_t DFRobot_MLX90614::getFIRBits(void)
+{
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return (buf[1]&0x07);
+}
+
+uint16_t DFRobot_MLX90614::getFIRLength(void)
+{
+  uint16_t FIRLengths[]={8,16,32,64,128,256,512,1024};
+  return FIRLengths[getFIRBits()];
+}
+
+uint8_t DFRobot_MLX90614::getIIRBits(void) {
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return (buf[0]&0x07);
+}
+
+uint8_t DFRobot_MLX90614::getIIRSpikeLimit(void)
+{
+  uint8_t SpikeLimits[]={50,25,17,13,100,80,67,57};
+  return SpikeLimits[getIIRBits()];
+}
+
+uint8_t DFRobot_MLX90614::getGainBits(void)
+{
+  uint8_t buf[2] = {0};
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  return ((buf[1]>>3)&0x07);
+}
+
+uint8_t DFRobot_MLX90614::getGainValue(void)
+{
+  uint8_t vGAIN[]={1,3,9,12,25,50,100,100};
+  return vGAIN[getGainBits()];
+}
+
+void DFRobot_MLX90614::setGainBits(eGAINMode_t GAINMode)
+{
+  uint8_t gainbits = (uint8_t)GAINMode;
+  uint8_t buf[2] = {0};
+  DBG(gainbits);
+  readReg(MLX90614_CONFIG_REG1, buf);
+  delay(10);
+  if (gainbits != ((buf[1]>>3)&0x07)) {
+	  uint8_t wbuf[2] = {0};
+	  writeReg(MLX90614_CONFIG_REG1, wbuf);
+	  delay(10);
+	  buf[1] = (buf[1] & 0xC7) | (gainbits<<3);
+	  DBG((uint16_t)buf[0] | (uint16_t)(buf[1] << 8),HEX)
+	  writeReg(MLX90614_CONFIG_REG1, buf);
+	  delay(10);
+  }
+}
+
+uint8_t DFRobot_MLX90614::setGainValue(uint8_t gainvalue) {
+  uint8_t vGAIN[]={1,3,9,12,25,50,100,100};
+  uint8_t gainbits=0;
+  while ((gainbits<8) && (gainvalue>=vGAIN[gainbits])) gainbits++;
+  if (gainbits) {
+	  setGainBits((eGAINMode_t)(--gainbits));
+	  return vGAIN[gainbits];
+  }
+  return 0;
 }
 
 float DFRobot_MLX90614::getAmbientTempCelsius(void)
@@ -116,6 +221,14 @@ float DFRobot_MLX90614::getAmbientTempCelsius(void)
   float temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8)) * 0.02 - 273.15;
 
   return temp;   // Get celsius temperature of the ambient
+}
+
+uint16_t DFRobot_MLX90614::getAmbientTemp(void)
+{
+  uint8_t buf[3];
+  readReg(MLX90614_TA, buf);
+  uint16_t temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  return temp;   // Get raw temperature of the ambient
 }
 
 float DFRobot_MLX90614::getObjectTempCelsius(void)
@@ -128,13 +241,21 @@ float DFRobot_MLX90614::getObjectTempCelsius(void)
   return temp;   // Get celsius temperature of the object 
 }
 
+uint16_t DFRobot_MLX90614::getObjectTemp(void)
+{
+  uint8_t buf[3];
+  readReg(MLX90614_TOBJ1, buf);
+  // DBG((buf[0] | buf[1] << 8), HEX);
+  uint16_t temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8));
+  return temp;   // Get raw temperature of the object 
+}
+
 float DFRobot_MLX90614::getObject2TempCelsius(void)
 {
   uint8_t buf[2];
   readReg(MLX90614_TOBJ2, buf);
   // DBG((buf[0] | buf[1] << 8), HEX);
   float temp = ((uint16_t)buf[0] | (uint16_t)(buf[1] << 8)) * 0.02 - 273.15;
-
   return temp;   // Get celsius temperature of the object 
 }
 
