@@ -202,13 +202,13 @@ void DFRobot_MLX90614_I2C::enterSleepMode(bool mode)
 #endif
 
     // wake up command, refer to the chip datasheet
-    pinMode(SDA, OUTPUT);
-    pinMode(SCL, OUTPUT);
-    digitalWrite(SCL, LOW);
-    digitalWrite(SDA, HIGH);
+    pinMode(PIN_WIRE_SDA, OUTPUT);
+    pinMode(PIN_WIRE_SCL, OUTPUT);
+    digitalWrite(PIN_WIRE_SCL, LOW);
+    digitalWrite(PIN_WIRE_SDA, HIGH);
     delay(50);
-    digitalWrite(SCL, HIGH);
-    digitalWrite(SDA, LOW);
+    digitalWrite(PIN_WIRE_SCL, HIGH);
+    digitalWrite(PIN_WIRE_SDA, LOW);
     delay(50);
 
     _pWire->begin();   // Wire.h（I2C）library function initialize wire library
