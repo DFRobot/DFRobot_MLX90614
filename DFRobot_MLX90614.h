@@ -16,7 +16,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define ENABLE_DBG   //!< open this macro and you can see the details of the program
+// #define ENABLE_DBG   //!< open this macro and you can see the details of the program
 #ifdef ENABLE_DBG
   #define DBG(...) {Serial.print("[");Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
 #else
