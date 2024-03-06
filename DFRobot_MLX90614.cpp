@@ -168,15 +168,26 @@ uint8_t DFRobot_MLX90614::readModuleFlags(void)
 
 /************ Initialization of I2C interfaces reading and writing ***********/
 
-DFRobot_MLX90614_I2C::DFRobot_MLX90614_I2C(uint8_t i2cAddr, TwoWire* pWire)
+DFRobot_MLX90614_I2C::DFRobot_MLX90614_I2C(uint8_t i2cAddr, TwoWire* pWire, int sdaPin, int sclPin)
 {
   _deviceAddr = i2cAddr;
   _pWire = pWire;
+
+  if (sdaPin < 0) { // default param passed
+    sdaPin = SDA;    //use Default Pin
+  }
+  if (sclPin < 0) { // default param passed
+    sclPin = SCL;    //use Default Pin
+  }
+
+  _sdaPin = sdaPin;    //use Default Pin
+  _sclPin = sclPin;    //use Default Pin
+
 }
 
 int DFRobot_MLX90614_I2C::begin(void)
 {
-  // _pWire->begin();   // Wire.h（I2C）library function initialize wire library
+  _pWire->begin();   // Wire.h（I2C）library function initialize wire library
 
   enterSleepMode(false);
   delay(50);
@@ -195,26 +206,27 @@ void DFRobot_MLX90614_I2C::enterSleepMode(bool mode)
 
     DBG("enter sleep mode");
   } else {
-#if defined(ESP32)
-    _pWire->~TwoWire();
-#elif !defined(ESP8266)
+    // #if defined(ESP32)   // Official SDK cannot call ~TwoWire(); firebeetle32 is not compatible
+    //     _pWire->~TwoWire();
+    // #elif !defined(ESP8266)
+#if !defined(ESP8266)
     _pWire->end();
 #endif
 
     // wake up command, refer to the chip datasheet
-    pinMode(SDA, OUTPUT);
-    pinMode(SCL, OUTPUT);
-    digitalWrite(SCL, LOW);
-    digitalWrite(SDA, HIGH);
+    pinMode(_sdaPin, OUTPUT);
+    pinMode(_sclPin, OUTPUT);
+    digitalWrite(_sclPin, LOW);
+    digitalWrite(_sdaPin, HIGH);
     delay(50);
-    digitalWrite(SCL, HIGH);
-    digitalWrite(SDA, LOW);
+    digitalWrite(_sclPin, HIGH);
+    digitalWrite(_sdaPin, LOW);
     delay(50);
 
     _pWire->begin();   // Wire.h（I2C）library function initialize wire library
 
 #ifdef ESP8266
-    digitalWrite(SCL, LOW);
+    digitalWrite(_sclPin, LOW);
 #endif
 
     _pWire->beginTransmission(_deviceAddr);

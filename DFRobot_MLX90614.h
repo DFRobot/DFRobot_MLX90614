@@ -196,7 +196,7 @@ public:
    * @param pWire Wire object is defined in Wire.h, so just use &Wire and the methods in Wire can be pointed to and used
    * @return None
    */
-  DFRobot_MLX90614_I2C(uint8_t i2cAddr=0x5A, TwoWire *pWire = &Wire);
+  DFRobot_MLX90614_I2C(uint8_t i2cAddr=0x5A, TwoWire *pWire = &Wire, int sdaPin = -1, int sclPin = -1);
 
   /**
    * @fn begin
@@ -263,6 +263,8 @@ protected:
 private:
   TwoWire *_pWire;   // pointer to I2C communication method
   uint8_t _deviceAddr;   // I2C communication device address
+  uint8_t _sdaPin;
+  uint8_t _sclPin;
 };
 
 #endif
