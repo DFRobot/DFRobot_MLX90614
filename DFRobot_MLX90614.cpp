@@ -15,7 +15,6 @@ DFRobot_MLX90614::DFRobot_MLX90614()
 {
 }
 
-
 int DFRobot_MLX90614::begin(void)
 {
   uint8_t idBuf[2];

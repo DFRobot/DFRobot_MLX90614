@@ -11,6 +11,7 @@
 #include <DFRobot_MLX90614.h>
 
 DFRobot_MLX90614_I2C sensor;   // instantiate an object to drive our sensor
+// DFRobot_MLX90614_I2C sensor(/*uint8_t i2cAddr=*/0x5A, /*TwoWire *pWire = */&Wire, /*int sdaPin=*/SDA, /*int sclPin=*/SCL);
 
 void setup()
 {

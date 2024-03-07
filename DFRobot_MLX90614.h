@@ -23,6 +23,7 @@
   #define DBG(...)
 #endif
 
+
 #define MLX90614_ID_NUMBER_1C 0x3802   ///< mlx9614 ID number(reg: MLX90614_ID_NUMBER)
 
 #define MLX90614_TA       0x06   ///< the register address stores the measured ambient temperature
