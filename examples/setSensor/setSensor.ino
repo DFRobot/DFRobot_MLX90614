@@ -12,6 +12,7 @@
 
 #define MLX90614_I2C_ADDR 0x5A   // mlx9614 default I2C communication address
 DFRobot_MLX90614_I2C sensor(MLX90614_I2C_ADDR, &Wire);   // instantiate an object to drive the sensor
+// DFRobot_MLX90614_I2C sensor(/*uint8_t i2cAddr=*/MLX90614_I2C_ADDR, /*TwoWire *pWire = */&Wire, /*int sdaPin=*/SDA, /*int sclPin=*/SCL);
 
 void setup()
 {
