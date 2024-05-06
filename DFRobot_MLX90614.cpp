@@ -5,7 +5,7 @@
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
  * @author  [qsjhyy](yihuan.huang@dfrobot.com)
- * @version  V1.0
+ * @version  V1.0.4
  * @date  2021-07-29
  * @url  https://github.com/DFRobot/DFRobot_MLX90614
  */
@@ -171,13 +171,16 @@ DFRobot_MLX90614_I2C::DFRobot_MLX90614_I2C(uint8_t i2cAddr, TwoWire* pWire, int 
 {
   _deviceAddr = i2cAddr;
   _pWire = pWire;
-
+  #ifdef SDA
   if (sdaPin < 0) { // default param passed
     sdaPin = SDA;    //use Default Pin
   }
+  #endif
+  #ifdef SCL
   if (sclPin < 0) { // default param passed
     sclPin = SCL;    //use Default Pin
   }
+  #endif
 
   _sdaPin = sdaPin;    //use Default Pin
   _sclPin = sclPin;    //use Default Pin
