@@ -7,12 +7,12 @@ The MLX90614 is an Infra Red thermometer for non contact temperature measurement
 Both the IR sensitive thermopile detector chip and the signal conditioning ASSP are integrated in the same TO-39 can.
 Thanks to its low noise amplifier, 17-bit ADC and powerful DSP unit, a high accuracy and resolution of the thermometer is achieved.
 
-![产品效果图](../../resources/images/mmlx90614.png) 
+![Product Picture](../../resources/images/mlx90614.png) 
 
 
 
-## Product Link(https://www.dfrobot.com)
-    SKU: SEN0206/sen0263
+## Product Link(https://www.dfrobot.com/product-1495.html)
+    SKU: SEN0206
 
 ## Table of Contents
 
@@ -43,13 +43,38 @@ sudo git clone https://github.com/DFRobot/DFRobot_MLX90614
 ```
 2. Run example code，to execuate a demo code，please input the following command line in command line:<br>
 ```python
+cd example
 python example.py 
 ```
 
 ## Methods
 
 ```python
-
+    '''!
+      @brief Initialize Sensor
+      @param address  mlx90614 slave address
+    '''
+    def __init__(self, address=0x5a, bus_num=1):
+    
+    '''!
+      @brief Convert the register raw value to temperature
+      @param data raw value in register
+    '''
+    def data_to_temp(self, data)
+    
+    '''!
+      @brief Measuring ambient temperature
+      @param none
+      @return Temperature (unit: °C)
+    '''
+    def get_amb_temp(self)
+    
+    '''!
+      @brief Measuring the temperature of an object
+      @param none
+      @return Temperature (unit: °C)
+    '''
+    def get_obj_temp(self):
 ```
 
 ## Compatibility

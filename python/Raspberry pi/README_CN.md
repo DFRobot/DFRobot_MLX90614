@@ -11,7 +11,7 @@ MLX90614是一款用于非接触式温度测量的红外温度计。
 ![产品效果图](../../resources/images/mlx90614.png) 
 
 ## 产品链接(https://www.dfrobot.com.cn/goods-1302.html)
-    SKU: SEN0206/SEN0263
+    SKU: SEN0206
 
 ## 目录
 
@@ -42,13 +42,36 @@ sudo git clone https://github.com/DFRobot/DFRobot_MLX90614
 2. 打开并运行例程，要执行一个例程demo_x.py，请在命令行中输入python demo_x.py。例如，要执行 example.py例程，你需要输入:<br>
 
 ```python
+cd example
 python example.py 
 ```
 
 ## 方法
 
 ```python
-
+    '''!
+      @brief 初始化传感器
+      @param address  mlx90614从机地址
+    '''
+    def __init__(self, address=0x5a, bus_num=1):
+    
+    '''!
+      @brief 将寄存器原始数值转化为温度
+      @param data 寄存器原始数值
+    '''
+    def data_to_temp(self, data)
+    
+    '''!
+      @brief 获取测量环境温度
+      @param none
+    '''
+    def get_amb_temp(self)
+    
+    '''!
+      @brief 获取测量物体温度
+      @param none
+    '''
+    def get_obj_temp(self):
 ```
 
 ## 兼容性
